@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import Aux from '../../hoc/Aux/Aux';
-import axiosOrders from '../../axios-orders';
+import axios from '../../axios-orders';
 
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummarry/OrderSumarry';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 
 const INGREDIENT_PRICES = {
@@ -105,7 +106,7 @@ class BurgerBuilder extends Component {
             deliveryMethod: 'fastest'
         }
 
-        axiosOrders.post('/orders.json', order).then(response => {
+        axios.post('/orders.json', order).then(response => {
             if (response.statusText =='OK') {
                 this.setState({loading: true, purchasing: false});
             }else {
@@ -113,8 +114,6 @@ class BurgerBuilder extends Component {
             }
         }).catch(error => {
             this.setState({loading: true, purchasing: false});
-            alert("Error Occured");
-            console.log("error occured try again")
         });   
     }
 
@@ -160,4 +159,4 @@ class BurgerBuilder extends Component {
     }
 }
 
-export default BurgerBuilder;
+export default withErrorHandler(BurgerBuilder, axios);
