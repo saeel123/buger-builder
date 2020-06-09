@@ -5,6 +5,7 @@ import Button from '../../../components/UI/Button/Button';
 import classes from './ContactData.module.css';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
+import { element } from 'prop-types';
 
 class ContactData extends Component {
     state = {
@@ -46,11 +47,11 @@ class ContactData extends Component {
                 elementConfig: {
                     options: [
                         {value: 'fastest', displayValue: 'Fastest'},
-                        {value: 'cheapest', displayValue: 'Cheapest'},
+                        {value: 'cheapest', displayValue: 'Cheapest'}
                     ]
                 },
                 value: ''
-            },
+            }
         },
         loading: false
     }
@@ -85,13 +86,44 @@ class ContactData extends Component {
         }); 
     }
 
+    inputChangedHadler = (event, inputIdentifier) => {
+        console.log(inputIdentifier);
+        
+
+        console.log(event.target.value);
+        const updatedOrderForm = {
+            ...this.state.orderForm
+        };
+
+        const updatedFormElement = {
+            ...updatedOrderForm[inputIdentifier]
+        }
+
+        updatedFormElement.value = event.target.value;
+        updatedOrderForm[inputIdentifier] = updatedFormElement;
+        this.setState({orderForm: updatedOrderForm});
+    }
+
     render() {
+            const formElementArray = [];
+            for(let key in this.state.orderForm) {
+                formElementArray.push({
+                    id: key,
+                    config: this.state.orderForm[key]
+                })
+            }
+
             let form =(
                         <form>
-                            <Input elementType="input" elementConfig="..." value="" />
-                            <Input inputtype="input" type="text" name="email" placeholder="Enter Your Email"/>
-                            <Input inputtype="input" type="text" name="street" placeholder="Enter Your Street"/>
-                            <Input inputtype="input" type="text" name="postalCode" placeholder="Enter Your Postal Code "/>
+                            {
+                                formElementArray.map(formElement => (
+                                    <Input  key={formElement.id}
+                                            elementType={formElement.config.elementType} 
+                                            elementConfig={formElement.config.elementConfig}  
+                                            changed={(event) => this.inputChangedHadler(event, formElement.id)}
+                                            value={formElement.config.value}/>
+                                ))
+                            }
                             <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>
                         </form>
             );  
@@ -106,9 +138,7 @@ class ContactData extends Component {
                     {form}
                 </div>
             )
-
         }
-        
     }
 
 
