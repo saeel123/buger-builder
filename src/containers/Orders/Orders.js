@@ -13,14 +13,19 @@ class Orders extends Component {
         this.props.onFetchOrders();
     }
 
-    render() {
+    render () {
+        let orders = <Spinner />;
+        if ( !this.props.loading ) {
+            orders = this.props.orders.map( order => (
+                <Order
+                    key={order.id}
+                    ingredients={order.ingredients}
+                    price={order.price} />
+            ) )
+        }
         return (
             <div>
-                {this.props.orders.map(order => (
-                    <Order  key={order.id} 
-                            ingredients={order.ingredients} 
-                            price={+order.price}  />
-                ))}
+                {orders}
             </div>
         );
     }
@@ -29,7 +34,7 @@ class Orders extends Component {
 const mapStateToProps = state => {
     return {
         orders: state.order.orders,
-        loading: state.order.state
+        loading: state.order.loading
     }
 }
 
