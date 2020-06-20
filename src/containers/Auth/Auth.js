@@ -5,10 +5,6 @@ import Classes from './Auth.module.css';
 import * as actionCreators from '../../store/actions/index';
 import { connect } from 'react-redux';
 
-
-
-
-
 class Auth extends Component {
     state = {
         controls: {
@@ -82,7 +78,7 @@ class Auth extends Component {
     orderHandler = (event) => {
         event.preventDefault();
         const email = this.state.controls.email.value;
-        const password = this.state.controls.email.password;
+        const password = this.state.controls.password.value;
 
         this.props.onAuthSubmit(email, password);
     }
