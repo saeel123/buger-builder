@@ -126,7 +126,6 @@ class ContactData extends Component {
         }
 
         this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid});
-        console.log(this.state.orderForm);
     }
 
     checkValidity(value, rules) {
