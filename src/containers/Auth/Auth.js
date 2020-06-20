@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import Classes from './Auth.module.css';
+import * as actionCreators from '../../store/actions/index';
+import { connect } from 'react-redux';
+
+
 
 
 
@@ -75,6 +79,14 @@ class Auth extends Component {
 
     }
 
+    orderHandler = (event) => {
+        event.preventDefault();
+        const email = this.state.controls.email.value;
+        const password = this.state.controls.email.password;
+
+        this.props.onAuthSubmit(email, password);
+    }
+
     render () {
         const formElementArray = [];
         for(let key in this.state.controls) {
@@ -109,4 +121,10 @@ class Auth extends Component {
     }
 }
 
-export default Auth;
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuthSubmit: (email, password) => dispatch(actionCreators.auth(email, password))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Auth);
